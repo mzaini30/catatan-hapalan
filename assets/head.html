@@ -1,5 +1,25 @@
-<html><head><meta name="viewport" content="width=device-width, initial-scale=1">
+<html><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script src="lib/alasql.js"></script>
-<script src="lib/petite-vue.js" init="" defer=""></script>
-<link rel="stylesheet" href="lib/pico.min.css"></head><body></body></html>
+    <script src="lib/alasql.js"></script>
+    <script src="lib/petite-vue.js" init="" defer=""></script>
+    <script src="lib/sweetalert2.js" init="" defer=""></script>
+    <link rel="stylesheet" href="lib/pico.min.css">
+  </head>
+  <body>
+    <script>
+      alasql(`create localStorage database if not exists data;
+attach localStorage database data;
+use data;
+create table if not exists pencapaian (id string, nomorHalaman number);`);
+
+      cek = alasql(`select count(*) as banyak from pencapaian`)[0].banyak;
+      if (cek == 0) {
+        alasql(
+          `insert into pencapaian (id, nomorHalaman) values ('${crypto.randomUUID()}', 0)`,
+        );
+      }
+    </script>
+  
+
+</body></html>

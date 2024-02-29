@@ -1,5 +1,60 @@
-<html><head></head><body><import src="head.html"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html><head></head>
+  <body>
+    <import src="head.html">
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script src="lib/alasql.js"></script>
-<script src="lib/petite-vue.js" init="" defer=""></script>
-<link rel="stylesheet" href="lib/pico.min.css"></import></body></html>
+    <script src="lib/alasql.js"></script>
+    <script src="lib/petite-vue.js" init="" defer=""></script>
+    <script src="lib/sweetalert2.js" init="" defer=""></script>
+    <link rel="stylesheet" href="lib/pico.min.css">
+  
+  
+    <script>
+      alasql(`create localStorage database if not exists data;
+attach localStorage database data;
+use data;
+create table if not exists pencapaian (id string, nomorHalaman number);`);
+
+      cek = alasql(`select count(*) as banyak from pencapaian`)[0].banyak;
+      if (cek == 0) {
+        alasql(
+          `insert into pencapaian (id, nomorHalaman) values ('${crypto.randomUUID()}', 0)`,
+        );
+      }
+    </script>
+  
+
+</import>
+
+    <script>
+      function init() {
+        nomorHalaman = alasql(`select nomorHalaman from pencapaian limit 1`)[0]
+          .nomorHalaman;
+        return nomorHalaman;
+      }
+
+      function simpan(nomor) {
+        alasql(`update pencapaian set nomorHalaman = ${nomor}`);
+        Swal.fire("Berhasil disimpan")
+      }
+    </script>
+
+    <div @vue:mounted="init" class="container" v-scope="{
+    	nomorHalaman: '',
+    	
+    	init: function (){
+    		this.nomorHalaman = init()
+    	},
+    	simpan: function(){
+    		simpan(this.nomorHalaman)
+    	}
+    }">
+      <form @submit.prevent="simpan">
+        <label>Nomor Halaman</label>
+        <input type="tel" required="" v-model="nomorHalaman">
+      </form>
+    </div>
+  
+
+</body></html>
