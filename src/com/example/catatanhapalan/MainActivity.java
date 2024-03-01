@@ -2,10 +2,12 @@ package com.example.catatanhapalan;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -21,6 +23,13 @@ public class MainActivity extends Activity {
 
 
         webView = (WebView)findViewById(R.id.web);
+
+WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDatabaseEnabled(true);
+        String databasePath = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        webSettings.setDatabasePath(databasePath);
+        webSettings.setDomStorageEnabled(true);
 
 
         webView.setWebViewClient(new WebViewClient() {
